@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
@@ -23,12 +24,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.rememberMe()
                 .userDetailsService(userDetailsService);
 
-        //세션 고정 보호
-        //인증에 성공 할때 마다 새로운 세션 id를 발급해주는 것.
+        //세션 정책
         http.sessionManagement()
-                .sessionFixation().changeSessionId()//changeSessionId()는 기본값. none, migrateSession, newSession 의 설정이 가능.
-        //migrateSessionrr과 changeSessionId : 이전 세션에 설정된 토큰값을 그대로 사용하지만, newSession은 아예 새로운 세션을 만든다.
-        //none : 세션을 새로 생성하지 않음.
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        //Always : 항상 세션을 생성함.
+        //If_Requried : 필요할떄만 생성(기본값)
+        //Never : 스프링 시큐리티가 생성하지 않지만 이미 존재하면 사용하긴 함.
+        //Stateless : 스프링 시큐리티가 생성하지도 않고 존재해도 사용하지 않음 -> 세션을 사용하지 않은 인증방식을 사용하려고 할떄 사용. 예를들면 jwt 토큰
         ;
 
 
