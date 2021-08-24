@@ -22,11 +22,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.rememberMe()
                 .userDetailsService(userDetailsService);
-        //동시 세션 제어
-        http.sessionManagement()//세션 관리 기능이 작동함.
-                .maximumSessions(1)//최대 허용 가능 세션수. -1 : 무제한 로그인 세션 허용
-                .maxSessionsPreventsLogin(false) //동시 로그인 차단함. -> 현재 사용가 차단. 기본값은 false -> 기존 세션 만료
-                .expiredUrl("/expired")//세션이 만료될 경우 이동할 페이지
+
+        //세션 고정 보호
+        //인증에 성공 할때 마다 새로운 세션 id를 발급해주는 것.
+        http.sessionManagement()
+                .sessionFixation().changeSessionId()//changeSessionId()는 기본값. none, migrateSession, newSession 의 설정이 가능.
+        //migrateSessionrr과 changeSessionId : 이전 세션에 설정된 토큰값을 그대로 사용하지만, newSession은 아예 새로운 세션을 만든다.
+        //none : 세션을 새로 생성하지 않음.
         ;
 
 
