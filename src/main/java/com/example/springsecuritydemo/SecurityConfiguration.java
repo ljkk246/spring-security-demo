@@ -23,16 +23,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.rememberMe()
                 .userDetailsService(userDetailsService);
-
-        //세션 정책
         http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-        //Always : 항상 세션을 생성함.
-        //If_Requried : 필요할떄만 생성(기본값)
-        //Never : 스프링 시큐리티가 생성하지 않지만 이미 존재하면 사용하긴 함.
-        //Stateless : 스프링 시큐리티가 생성하지도 않고 존재해도 사용하지 않음 -> 세션을 사용하지 않은 인증방식을 사용하려고 할떄 사용. 예를들면 jwt 토큰
-        ;
-
-
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true);
+        //세션 제어 필터 : SessionManagementFilter, ConcurrentSessionFilter
+        //SessionManagementFilter 는 세션 관리에 대한 filter이고 ConcurrentSessionFilter는 동시 세션 제어에 대한 filter다.
+        //SessionManagementFilter 의 ConcurrentSessionControlAuthenticationStrategy : 세션이 이미 존재하는지 체크 함.
+        //SessionManagementFilter 의 ChangeSessionIdAuthenticationStrategy : 세션 고정 보호처리를 함. 세션Id를 새로 만듬.
+        //SessionManagementFilter 의 RegisterSessionAuthenticationStrategy : 사용자의 세션을 등록하고 저장함.
+        //ConcurrentSessionFilter : session.isExpired -> ConcurrentSessionControlAuthenticationStrategy 호출 하여 세션 만료 체크함.
     }
 }
