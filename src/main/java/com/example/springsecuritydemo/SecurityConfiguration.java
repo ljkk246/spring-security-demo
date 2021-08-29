@@ -35,8 +35,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll();
         http.formLogin();
 
-        http.csrf().disable();//filterChainProxy에서 아예 CsrfFilter를 거치지 않게 된다.
-        //타임리프에는 기본적으로 post 방식으로 요청할떄 csrf토큰을 생성해준다.
-        //스프링의 form태그에도 자동으로 생성해준다. 그러나 일반적인 jsp같은 경우에는 form 태그에 직접 설정해야 정상적으로 요청이 이루어진다.
+        //** DelegatingProxyChain, FilterChainProxy **
+        //springSecurityFilterChain의 이름으로 필터 리스트가 생성.
+        //DelegatingFilterProxy는 서블릿 필터의 요청을 위임받아 Spring bean에게 넘겨서 서블릿 필터가 스프링 기반으로 동작하게 하는데,
+        //DelegatingFilterProxy으로 부터 요청을 위임받고 실제 보안처릴를 하는 게 springSeucirtyFilterChain 목록에 있는 필터다.
+        //모든 필터에 대한 검사가 완료되면 DispatcherServelet으로 전달해서 실제 요청에 대한 처리를 진행.
+
     }
 }
