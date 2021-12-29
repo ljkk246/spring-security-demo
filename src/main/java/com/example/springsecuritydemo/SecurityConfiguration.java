@@ -53,3 +53,25 @@ class SecurityConfiguration2 extends WebSecurityConfigurerAdapter {
 
     }
 }
+/**
+ * Authentication 구조.
+ * 당신이 누구 인지 증명하는것.
+ * principal : 사용자 아이디, User 객체를 저장
+ * credentials : 사용자 비밀번호
+ * authorities : 인증된 사용자 권한 목록
+ * details : 인증 부가 정보
+ * Authenticated : 인증 여부
+ */
+
+/**
+ * 사용자가 로그인 -> username, password ->
+ * UsernamePasswordAuthenticationFilter 에서 principal : 아이디, credentials : 패스워드, Authenticated : false로 Authenitcation 객체를 만들고
+ * AuthenticationManager에서  principal : UserDetails, credentials : ---,authorities : ROlE_ADMIN Authenticated : true로 Authenitcation 객체를
+ * SecurityContextHolder의 SecurityContext에 저장한다.
+ * (SC는 ThreadLocal로 되어 있어서 전역적으로 사용할 수 있다.
+ *  인증이 필요한 자원 접근을 할 때 AbsctractSecurityInterceptor에서 SC를 먼저 조회해서 Authentication을 가져오기 때문에 또 인증처리를 거칠필요 가 없다.)
+ * 즉 Authentication은 인증되기 전 UsernamePasswordAuthenticationFilter에서 생성되고,
+ * AuthenticationManager로 인증 후에도 생성된다. 따라서 UsernamePasswordAuthenticationToken은 생성자가 2개.
+ *
+ * Authentication은 인터페이스. 이것을 구현한 게 UsernamePasswordAuthenticationToken, RememberMeAuthenticationToken 등이 있다.
+ */
