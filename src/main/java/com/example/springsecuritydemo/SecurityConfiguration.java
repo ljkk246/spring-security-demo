@@ -75,3 +75,20 @@ class SecurityConfiguration2 extends WebSecurityConfigurerAdapter {
  *
  * Authentication은 인터페이스. 이것을 구현한 게 UsernamePasswordAuthenticationToken, RememberMeAuthenticationToken 등이 있다.
  */
+
+/**
+ * SecurityContext
+ * SecurityContext 안에 Authentication 객체가 저장.
+ * 인증이 안료되면 'SPRING_SECURITY_CONTEXT' 라는 이름으로
+ * HTTPSession에 저장되어 어플리케이션 전반에 걸쳐 전역적인 참조가 가능함.
+ */
+
+/**
+ * SecurityContextHolder
+ * 3가지 모드로 SecurityContext 객체를 저장한다.
+ * MODE_THREADLOCAL: 기본값. 스레드당 SC 객체를 할당
+ * MODE_IngeritableThreadLocal : 메인스레드와 자식 스레드까지 동일한 SC 유지
+ * MODE_Global : 응용 프로그램에서 단 하나의 SC를 저장.
+ * SecurityContextHolder.clearContext() : SC 기존 정보 초기화.
+ * Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+ */
